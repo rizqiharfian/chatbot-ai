@@ -1,0 +1,16 @@
+{
+    "name": "chatbot/ai",
+    "description": "chatbot sederhana dengan openAI",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Rizqi Harfian"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "guzzlehttp/guzzle": "^7.9",
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
