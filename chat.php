@@ -18,9 +18,18 @@ if (trim($message) === '') {
 }
 
 try {
+    $pdo = new PDO(
+        "mysql:host={$_ENV['DB_HOST']};dbname={$_ENV['DB_NAME']}",
+        $_ENV['DB_USER'],
+        $_ENV['DB_PASS']
+    );
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $stmt = $pdo->prepare("INSERT INTO messages (sender, message) VALUES (?, ?)");
+    $stmt->execute(['user', $message]);
+
     $client = new Client();
     $apiKey = $_ENV['GEMINI_API_KEY'];
-
     $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={$apiKey}";
 
     $payload = [
@@ -39,8 +48,11 @@ try {
     ]);
 
     $result = json_decode($response->getBody(), true);
-
     $reply = $result['candidates'][0]['content']['parts'][0]['text'] ?? 'Bot tidak membalas apa-apa.';
+
+    $stmt = $pdo->prepare("INSERT INTO messages (sender, message) VALUES (?, ?)");
+    $stmt->execute(['bot', $reply]);
+
     echo json_encode(['reply' => $reply]);
 
 } catch (Exception $e) {
