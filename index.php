@@ -189,12 +189,10 @@
     const inputField = document.getElementById('input');
     const messagesContainer = document.getElementById('messages');
 
-    // === Load dark mode ===
     if (localStorage.getItem('darkMode') === 'true') {
       document.body.classList.add('dark');
     }
 
-    // === Load history ===
     window.onload = () => {
       const history = JSON.parse(localStorage.getItem('chatHistory')) || [];
       history.forEach(({ sender, text, time }) => addMessage(sender, text, time));
