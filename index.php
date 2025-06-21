@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Chatbot AI</title>
+  <link rel="icon" type="image/png" href="media/lenovo.png" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -25,7 +26,7 @@
 
     #chatbox {
       width: 100%;
-      max-width: 700px;
+      max-width: 1000px;
       height: 90vh;
       background: white;
       border-radius: 15px;
@@ -225,7 +226,6 @@
       inputField.style.height = 'auto';
       scrollToBottom();
 
-      // Tampilkan "Bot sedang mengetik..."
       const typingMsg = document.createElement('div');
       typingMsg.className = 'message bot typing';
       typingMsg.textContent = 'Bot sedang mengetik...';
@@ -254,10 +254,19 @@
       }
     }
 
+    function formatMessage(text) {
+      return text
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // **bold**
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')              // *italic*
+        .replace(/`([^`]+)`/g, '<code>$1</code>')          // `code`
+        .replace(/^- (.*)$/gm, '<li>$1</li>')              // - list item
+        .replace(/\n/g, '<br>');                           // Newline to <br>
+    }
+
     function addMessage(sender, text, time = '') {
       const div = document.createElement('div');
       div.className = 'message ' + sender;
-      div.textContent = text;
+      div.innerHTML = formatMessage(text);
 
       if (time) {
         const span = document.createElement('span');
